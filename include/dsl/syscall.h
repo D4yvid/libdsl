@@ -8,11 +8,22 @@
 #       define __SYSCALL_WRITE(ret, fd, buf, count)     __asm__ ("int $0x0080" : "=a"(ret) : "a"(0x04), "b"(fd), "c"(buf), "d"(count))
 #       define __SYSCALL_READ(ret, fd, buf, count)      __asm__ ("int $0x0080" : "=a"(ret) : "a"(0x03), "b"(fd), "c"(buf), "d"(count))
 #elif defined(__aarch64__) || defined(_M_ARM64) /* arm64 */
-#       define __SYSCALL_WRITE(ret, fd, buf, count)     \
-        __asm__ ("mov %x8, #0x0040")                     \
-        __asm__ ("mov %x0, %[fd]" : : [fd] "r"())
+#       define __SYSCALL_WRITE(ret, fd, buf, count)                     \
+                __asm__ ("mov w0, %w0" : : "r"(fd));                    \
+                __asm__ ("mov x1, %x0" : : "r"(buf));                   \
+                __asm__ ("mov w2, %w0" : : "r"(count));                 \
+                __asm__ ("mov x8, #0x40");                              \
+                __asm__ ("svc #0x0000");                                \
+                __asm__ ("mov %w0, w0" : "=r"(ret))
+#       define __SYSCALL_READ(ret, fd, buf, count)                      \
+                __asm__ ("mov w0, %w0" : : "r"(fd));                    \
+                __asm__ ("mov x1, %x0" : : "r"(buf));                   \
+                __asm__ ("mov w2, %w0" : : "r"(count));                 \
+                __asm__ ("mov x8, #0x3f");                              \
+                __asm__ ("svc #0x0000");                                \
+                __asm__ ("mov %w0, w0" : "=r"(ret));
 #else
-#error Unsupported arch!
+#error Unsupported architecture!
 #endif
 
 #endif /* __DSL_SYSCALL_H__ */
