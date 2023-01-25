@@ -1,7 +1,7 @@
 TESTS = $(subst .c,,$(wildcard *.c))
 
 CC := clang
-CFLAGS = -m32 -I ../include -g
+CFLAGS = -I ../include
 LFLAGS = -L ../build -ldsl
 
 %: %.c
