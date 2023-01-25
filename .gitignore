@@ -1,0 +1,4 @@
+build/
+tests/*[^.c]
+!tests/Makefile
+*.o
