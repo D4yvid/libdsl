@@ -1,8 +1,9 @@
 #ifndef __DSL_TYPES_H__
 #define __DSL_TYPES_H__
 
-#define __DSL_API__ extern
-#define __DSL_PRIV_API__ static
+#define __DSL_API__             extern
+#define __DSL_PRIV_API__        static
+#define __dsl_unique_ptr__(v) v *
 
 #ifndef NULL
 #       define NULL ((void *) 0x00)

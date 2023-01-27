@@ -2,7 +2,6 @@
 #include "dsl/string.h"
 #include "dsl/syscall.h"
 #include "dsl/types.h"
-#include <stdarg.h>
 
 void __dsl_print(const i8 *buffer)
 {
@@ -32,5 +31,5 @@ u32 __dsl_read(u32 fd, i8 *buffer, u32 count)
 
 void __dsl_printf(const i8 *fmt, ...)
 {
-
+        /* TODO: printf equivalent. */
 }

@@ -3,7 +3,7 @@ SRC = $(wildcard src/*.c src/**/*.c)
 OBJ = $(SRC:.c=.o)
 
 CC := clang
-CFLAGS = -Wall -Werror -Wpedantic -Wno-unused-parameter -Wno-unused-variable -Wno-incompatible-library-redeclaration -fPIC -nostdlib -I include
+CFLAGS = -ansi -Wall -Werror -Wpedantic -Wno-unused-parameter -Wno-unused-variable -Wno-incompatible-library-redeclaration -fPIC -nostdlib -I include
 LFLAGS = -shared
 
 %.o: %.c

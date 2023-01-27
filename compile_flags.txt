@@ -1,5 +1,5 @@
 -I
 include
 -Wno-incompatible-library-redeclaration
--Di386
--D__aarch64__
+-ansi
+-Werror
