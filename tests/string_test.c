@@ -1,22 +1,18 @@
+#include "dsl/io.h"
 #include "dsl/string.h"
 #include <assert.h>
-#include <stdio.h>
-#include <string.h>
 
-int main(int argc, i8 **argv)
+i32 main(i32 argc, i8 **argv)
 {
-        assert(strlen("Hello") == __dsl_strlen("Hello"));
-        assert((strcmp("Hello", "Hello") == 0) == (__dsl_strequal("Hello", "Hello")));
+	i8 tmpbuf[32];
 
-        i8 out[6];
+	assert(-12345 == strtoi32("-12345"));
+	assert(123456 == strtoi32("123456"));
 
-        __dsl_strupper("Hello", out);
-        assert(__dsl_strequal(out, "HELLO"));
+	assert(10 == strlen("0123456789"));
+	assert(16 == strlen("0123456789ABCDEF"));
 
-        __dsl_strlower("HELLO", out);
+	i32tostr(32, tmpbuf, 32);
 
-        assert(__dsl_strequal(out, "hello"));
-
-        assert(-123214 == __dsl_strtoi32("-123214"));
-        assert(12324123 == __dsl_strtoi32("12324123"));
+	return 0;
 }

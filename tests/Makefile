@@ -1,7 +1,7 @@
 TESTS = $(subst .c,,$(wildcard *.c))
 
 CC := clang
-CFLAGS = -I ../include
+CFLAGS = -I ../src
 LFLAGS = -L ../build -ldsl
 
 %: %.c

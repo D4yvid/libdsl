@@ -1,17 +1,19 @@
 TARGET = build/libdsl.so
-SRC = $(wildcard src/*.c src/**/*.c)
+SRC = $(shell find src -type f -name '*.c')
 OBJ = $(SRC:.c=.o)
 
 CC := clang
-CFLAGS = -ansi -Wall -Werror -Wpedantic -Wno-unused-parameter -Wno-unused-variable -Wno-incompatible-library-redeclaration -fPIC -nostdlib -I include
-LFLAGS = -shared
+CFLAGS += -Wall -Werror -Wpedantic -Wno-unused-parameter -Wno-unused-variable \
+				  -Wno-incompatible-library-redeclaration -nostdlib -O2
+
+LFLAGS += -shared
 
 %.o: %.c
-	@echo "\033[2m==>\033[0m Building object $@"
+	@printf "\033[1m==>\033[0m Building object $@\n"
 	@$(CC) -c -o $@ $< $(CFLAGS)
 
 build: $(OBJ)
-	@echo "\033[2m==>\033[0m Linking dynamic library \033[32m$(TARGET)\033[0m"
+	@printf "\033[1m==>\033[0m Linking dynamic library \033[32m$(TARGET)\033[0m\n"
 	@mkdir -p build
 	@$(CC) -o $(TARGET) $(OBJ) $(CFLAGS) $(LFLAGS)
 
@@ -19,7 +21,7 @@ test:
 	@$(MAKE) -C tests
 
 clean:
-	@echo "\033[2m==>\033[0m Cleaning up..."
+	@printf "\033[1m==>\033[0m Cleaning up...\n"
 	@rm -rf $(OBJ) $(TARGET)
 	@$(MAKE) -C tests clean > /dev/null
 

@@ -1,5 +1,4 @@
--I
-include
+-Isrc
 -Wno-incompatible-library-redeclaration
--ansi
+-std=c99
 -Werror

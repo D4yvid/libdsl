@@ -1,12 +1,17 @@
 #ifndef __DSL_TYPES_H__
 #define __DSL_TYPES_H__
 
-#define __DSL_API__             extern
-#define __DSL_PRIV_API__        static
-#define __dsl_unique_ptr__(v) v *
+#define public			extern
+#define internal		static
+
+#define UNIQUE_PTR(v) __attribute__((annotate("unique ptr")) restrict v *
 
 #ifndef NULL
-#       define NULL ((void *) 0x00)
+#	define NULL ((void *) 0x00)
+#endif
+
+#ifndef null
+#	define null ((void *) 0x00)
 #endif
 
 typedef char		i8;
@@ -21,8 +26,12 @@ typedef unsigned long	u64;
 
 typedef enum
 {
-        false   = 0,
-        true    = 1
+	#undef true
+	#undef false
+	#undef bool
+
+	false   = 0,
+	true    = 1
 } bool;
 
 #endif /* __DSL_TYPES_H__ */

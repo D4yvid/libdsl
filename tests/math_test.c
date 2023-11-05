@@ -4,5 +4,5 @@
 
 int main(int argc, char **argv)
 {
-        assert(__dsl_align_num(0xfa, 0x10) == 0x100);
+	assert(align_num(0xfa, 0x10) == 0x100);
 }

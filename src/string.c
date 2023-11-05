@@ -1,103 +1,119 @@
-#include "dsl/string.h"
+#include "dsl/number.h"
 #include "dsl/types.h"
+#include "dsl/string.h"
 
-u32 __dsl_strlen(const i8 *string)
+u32 strlen(const i8 *string)
 {
-        if (string == NULL) {
-                return 0;
-        }
+	u32 size = 0;
 
-        u32 size = 0;
+	if (!string) return 0;
 
-        while (string[size++]);
+	while (string[size++]);
 
-        return size - 1;
+	return size - 1;
 }
 
-void __dsl_strupper(const i8 *source, i8 *out)
+void strupper(const i8 *source, i8 *out)
 {
-        i32 i;
-        for (i = 0; i < __dsl_strlen(source); i++)
-        {
-                if (__dsl_ischr(source[i]))
-                {
-                        out[i] = source[i] & ~(STRING_CASE_MASK);
-                }
-        }
+	i32 i;
+
+	for (i = 0; i < strlen(source); i++)
+	{
+		if (ischr(source[i]))
+		{
+			out[i] = source[i] & ~(STRING_CASE_MASK);
+		}
+	}
 }
 
-void __dsl_strlower(const i8 *source, i8 *out)
+void strlower(const i8 *source, i8 *out)
 {
-        i32 i;
-        for (i = 0; i < __dsl_strlen(source); i++)
-        {
-                if (__dsl_ischr(source[i]))
-                {
-                        out[i] = source[i] | STRING_CASE_MASK;
-                }
-        }
+	i32 i;
+
+	for (i = 0; i < strlen(source); i++)
+	{
+		if (!ischr(source[i]))
+			continue;
+
+		out[i] = source[i] | STRING_CASE_MASK;
+	}
 }
 
-i32 __dsl_strtoi32(const i8 *string)
+i32 strtoi32(const i8 *string)
 {
-        i32 num = 0;
-        bool negative = false;
+	i32 num = 0;
+	bool negative = false;
 
-        u32 len = __dsl_strlen(string);
+	u32 len = strlen(string);
 
-        if (len == 0)
-        {
-                return 0;
-        }
+	if (len == 0)
+		return 0;
 
-        if (string[0] == '-')
-        {
-                negative = true;
-                string++;
-                len--;
-        }
+	if (string[0] == '-')
+	{
+		negative = true;
 
-        int i;
-        for (i = 0; i < len; i++)
-        {
-                if (!__dsl_isnum(string[i]))
-                        break;
+		string++;
+		len--;
+	}
 
-                num = num * 10 + (string[i] - '0');
-        }
+	int i;
 
-        if (negative)
-                num *= -1;
+	for (i = 0; i < len; i++)
+	{
+		if (!isnum(string[i]))
+			break;
 
-        return num;
+		num = num * 10 + (string[i] - '0');
+	}
+
+	if (negative)
+		num *= -1;
+
+	return num;
 }
 
-bool __dsl_isnum(const i8 val)
+i8 *i32tostr(i32 num, i8 *buf, u32 size)
 {
-        return (val >= '0' && val <= '9');
+	i32 digit_count = get_digit_count(num);
+	i32 i;
+
+	digit_count = min(digit_count, size);
+
+	for (i = digit_count; i > 0; i--)
+	{
+		buf[i - 1] = (num % 10) + '0';
+	}
+
+	buf[digit_count] = 0;
+
+	return buf;
 }
 
-bool __dsl_ischr(const i8 val)
+bool isnum(const i8 val)
 {
-        return (val >= 'a' && val <= 'z') ||
-               (val >= 'A' && val <= 'Z');
+	return (val >= '0' && val <= '9');
 }
 
-bool __dsl_strequal(const i8 *rhs, const i8 *lhs)
+bool ischr(const i8 val)
 {
-        u32 len_rhs = __dsl_strlen(rhs);
-        u32 len_lhs = __dsl_strlen(lhs);
+	return (val >= 'a' && val <= 'z') ||
+	       (val >= 'A' && val <= 'Z');
+}
 
-        if (len_lhs != len_rhs)
-                return false;
+bool strequal(const i8 *rhs, const i8 *lhs)
+{
+	i32 i;
 
-        i32 i;
+	u32 len_rhs = strlen(rhs);
+	u32 len_lhs = strlen(lhs);
 
-        for (i = 0; i < len_rhs; i++)
-        {
-                if (rhs[i] != lhs[i])
-                        return false;
-        }
+	if (len_lhs != len_rhs)
+		return false;
 
-        return true;
+	for (i = 0; i < len_rhs; i++)
+		if (rhs[i] != lhs[i])
+			return false;
+
+	return true;
 }
